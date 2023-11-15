@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/perfil-edit.css">
+    <title>Editar Perfil</title>
+    <script src="perfil-edit.js"></script>
+</head>
+<body>
+
+    <h1>Editar Perfil</h1>
+
+    <div id="profileForm">
+        <label for="portfolioInput">Portfólio:</label>
+        <input type="text" id="portfolioInput" name="portfolioInput">
+        <br>
+        
+        <label for="usernameInput">Nome de Usuário:</label>
+        <input type="text" id="usernameInput" name="usernameInput">
+        <br>
+
+        <button id="saveProfileButton">Salvar Perfil</button>
+    </div>
+
+    <a href="perfil.html">Voltar ao Perfil</a>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="../Cadastro/config.js"></script>
+    <script src="index.js"></script>
+    <script src="js/perfil-edit.js"></script>
+</body>
+</html>

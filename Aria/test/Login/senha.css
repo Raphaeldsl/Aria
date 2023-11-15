@@ -1,0 +1,49 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(to right, black, red);
+}
+
+.container {
+    position: relative;
+}
+
+.card {
+    margin-bottom: 20px; /* Adicione espaço abaixo do card para a mensagem */
+}
+
+.alert {
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    form {
+        width: 100%;
+        text-align: center;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2%;
+    }
+    .logo-and-name {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 20px;
+    }
+}
+
+/* Estilo personalizado para o formulário na versão celular */
+@media (max-width: 767px) {
+    form {
+        width: 100%;
+        text-align: center;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2%;
+    }
+    .logo-and-name {
+        display: block;
+        margin-bottom: 20px;
+    }
+}

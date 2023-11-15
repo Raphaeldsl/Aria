@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="home.css">
+    <title>Home</title> 
+    <script src="index.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <img class="profile-pic" src="seu-perfil.jpg" alt="Sua Foto de Perfil">
+        <a href="home_index.html">Home</a>
+        <a href="musica_index.html">Música</a>
+        <a href="cinema_index.html">Cinema</a>
+        <a href="games_index.html">Games</a>
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </div>
+
+    <div class="menu-dropdown" id="menuDropdown">
+        <a href="perfil.html">Perfil</a>
+        <a href="#">Conta</a>
+        <a href="#">Configurações</a>
+        <button id="Sair">Sair</button>
+    </div>
+
+
+    <!-----------Teste de midia--------->
+    <h1>Bem-vindo </h1>
+
+    <div id="dadosUser"> </div>
+
+  
+    <h1>Enviar Arquivo</h1>
+
+    <form id="fileForm">
+        <input type="file" id="fileInput">
+        <button type="button" onclick="uploadFile()">Enviar</button>
+    </form>
+
+     <div id="fileList"></div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase.js"></script>
+    <script src="../Cadastro/config.js"></script>
+</body>
+</html>
