@@ -101,9 +101,9 @@ body {
     align-items: center;
 }
 
-/* Estilos para o logotipo */
+
 .logo {
-    width: 300px; /* Largura desejada para o logotipo */
-    height: auto; /* Mantém a proporção original da imagem */
+    width: 300px; 
+    height: auto; 
     margin-left: -500px; 
 }

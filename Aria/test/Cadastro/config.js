@@ -8,7 +8,6 @@
   appId: "1:279976171170:web:caa77af161cfb3eca329fb",
   measurementId: "G-KJ7JK4LDPP"
 };*/
-
 /*raphael
 const firebaseConfig = {
   apiKey: "AIzaSyD0__2tCTlEQhwv3GwtxU9bBy7dJTz4GCE",
@@ -20,6 +19,7 @@ const firebaseConfig = {
   appId: "1:3231346956:web:41135319866475df7c1929",
   measurementId: "G-XDNPFXL9G7"
 };*/
+
 const firebaseConfig = {
   apiKey: "AIzaSyB0CLDzjszZgzppgnMVbpiQ-AORyhhsci0",
   authDomain: "test123-326b8.firebaseapp.com",
