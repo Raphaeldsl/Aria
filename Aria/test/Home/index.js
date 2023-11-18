@@ -1,23 +1,19 @@
 function toggleMenu() {
-    var menuDropdown = document.getElementById("menuDropdown");
-    menuDropdown.classList.toggle("show-menu");
+  var menuDropdown = document.getElementById("menuDropdown");
+  menuDropdown.classList.toggle("show-menu");
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const logoutButton = document.getElementById('Sair');
+  const logoutButton = document.getElementById('Sair');
 
-    logoutButton.addEventListener('click', () => {
-        firebase.auth().signOut().then(() => {
-         window.location.href = '../Cadastro/cadastro.html';
-         })
-        .catch((error) => {
-        console.error('Erro ao encerrar a sessão: ', error);
+  logoutButton.addEventListener('click', () => {
+    firebase.auth().signOut().then(() => {
+      window.location.href = '../Cadastro/cadastro.html';
+    }).catch((error) => {
+      console.error('Erro ao encerrar a sessão: ', error);
     });
   });
 });
-
-//teste de midia
-dadosUser = document.querySelector("#dadosUser")
 
 // Função para enviar arquivo para o Firebase Storage
 function uploadFile() {
@@ -46,62 +42,11 @@ function uploadFile() {
   }
 }
 
-// Função para recuperar arquivos do Firebase Storage
-function displayAllFiles() {
-  var fileList = document.getElementById('fileList');
-  fileList.innerHTML = ''; // Limpar a lista de arquivos
-
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      var filesRef = storage.ref('users/' + user.uid + '/files');
-      filesRef.listAll().then(result => {
-        result.items.forEach(item => {
-          item.getDownloadURL().then(url => {
-            item.getMetadata().then(metadata => {
-              var fileContainer = document.createElement('div');
-              fileContainer.classList.add('file-container'); // Adicionar a classe
-
-              if ( item.name.toLowerCase().endsWith('.jpg') || item.name.toLowerCase().endsWith('.jpeg') 
-                || item.name.toLowerCase().endsWith('.png') || item.name.toLowerCase().endsWith('.gif')) {
-                // Se for uma imagem, exibir miniatura
-                var img = document.createElement('img');
-                img.src = url; // Usar a variável url diretamente
-                img.alt = metadata.name; // Adicione o nome do arquivo como texto alternativo
-                img.classList.add('file-image'); // Adicionar a classe
-                fileContainer.appendChild(img);
-              } else {
-                // Se for outro tipo de arquivo, exibir um link direto para o download
-                var link = document.createElement('a');
-                link.href = url; // Usar a variável url diretamente
-                link.innerHTML = metadata.name; // Use metadata.name para exibir o nome do arquivo
-                fileContainer.appendChild(link);
-              }
-
-              // Adicione o nome do arquivo abaixo da miniatura ou link
-              var fileNameElement = document.createElement('p');
-              fileNameElement.textContent = metadata.name;
-              fileContainer.appendChild(fileNameElement);
-
-              fileList.appendChild(fileContainer);
-            });
-          }).catch(error => {
-            console.error('Erro ao recuperar metadados:', error);
-          });
-        });
-      }).catch(error => {
-        console.error('Erro ao recuperar arquivos:', error);
-      });
-    } else {
-      console.error('Usuário não autenticado.');
-    }
-  });
-}
-
-
-// Função para recuperar arquivos do Firebase Storage
+// Função para recuperar arquivos do Firebase Storage e criar cards
+// Função para recuperar arquivos do Firebase Storage e criar cards
 function displayFiles() {
-  var fileList = document.getElementById('fileList');
-  fileList.innerHTML = ''; // Limpar a lista de arquivos
+  var cardContainer = document.getElementById('cardContainer');
+  cardContainer.innerHTML = ''; // Limpar a lista de cards
 
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
@@ -110,46 +55,48 @@ function displayFiles() {
         result.items.forEach(item => {
           item.getDownloadURL().then(url => {
             item.getMetadata().then(metadata => {
+              let arquivoconfig = user.uid + ".txt";
 
-              let arquivoconfig = user.uid + ".txt"
-              if (metadata.name != arquivoconfig) {
+              if (metadata.name != arquivoconfig && (metadata.contentType.startsWith('image') || metadata.contentType.startsWith('video'))) {
 
-                var fileContainer = document.createElement('div');
-                fileContainer.classList.add('file-container'); // Adicionar a classe
+                var cardAndButtonContainer = document.createElement('div');
+                cardAndButtonContainer.classList.add('card-and-button-container');
 
-                if ( item.name.toLowerCase().endsWith('.jpg') || item.name.toLowerCase().endsWith('.jpeg') 
-                  || item.name.toLowerCase().endsWith('.png') || item.name.toLowerCase().endsWith('.gif')) {
+                var card = document.createElement('div');
+                card.classList.add('card');
+                card.onclick = function () {
+                  window.location.href = 'produto.html';
+                };
+
+                if (metadata.contentType.startsWith('image')) {
                   // Se for uma imagem, exibir miniatura
-                  var img = document.createElement('img');
-                  img.src = url; // Usar a variável url diretamente
-                  img.alt = metadata.name; // Adicione o nome do arquivo como texto alternativo
-                  img.classList.add('file-image'); // Adicionar a classe
-                  fileContainer.appendChild(img);
-                } else {
-                  // Se for outro tipo de arquivo, exibir um link direto para o download
-                    var link = document.createElement('a');
-                    link.href = url; // Usar a variável url diretamente
-                    link.innerHTML = metadata.name; // Use metadata.name para exibir o nome do arquivo
-                    fileContainer.appendChild(link);
+                  var cardImage = document.createElement('img');
+                  cardImage.src = url;
+                  cardImage.alt = 'Imagem do produto';
+                  card.appendChild(cardImage);
+                } else if (metadata.contentType.startsWith('video')) {
+                  // Se for um vídeo, exibir um elemento de vídeo diretamente
+                  var cardVideo = document.createElement('video');
+                  cardVideo.src = url;
+                  cardVideo.controls = true;
+                  card.appendChild(cardVideo);
                 }
 
-                // Adicione o botão de remoção
+                var cardContent = document.createElement('div');
+                cardContent.classList.add('card-content');
+                card.appendChild(cardContent);
+
+                cardAndButtonContainer.appendChild(card);
+
+                // Adicione o botão de remoção fora do card
                 var removeButton = document.createElement('button');
                 removeButton.textContent = 'Remover';
-                removeButton.addEventListener('click', function() {
+                removeButton.addEventListener('click', function () {
                   removeFile(user.uid, item.name);
                 });
-                fileContainer.appendChild(removeButton);
+                cardAndButtonContainer.appendChild(removeButton);
 
-                // Adicione o nome do arquivo abaixo da miniatura ou link
-                var fileNameElement = document.createElement('p');
-                fileNameElement.textContent = metadata.name;
-                fileContainer.appendChild(fileNameElement);
-
-                fileList.appendChild(fileContainer);
-              }
-              else {
-                  dadosUser.innerHTML = arquivoconfig
+                cardContainer.appendChild(cardAndButtonContainer);
               }
             });
           }).catch(error => {
@@ -164,6 +111,7 @@ function displayFiles() {
     }
   });
 }
+
 
 // Função para remover um arquivo do Firebase Storage
 function removeFile(userId, fileName) {
@@ -179,74 +127,3 @@ function removeFile(userId, fileName) {
 
 // Chamar a função de exibição ao carregar a página
 document.addEventListener('DOMContentLoaded', displayFiles);
-
-//midia recuperar do firebase
-
-dadosUser = document.querySelector("#dadosUser")
-
-// Função para recuperar arquivos do Firebase Storage
-function displayAllFiles() {
-  var fileList = document.getElementById('fileList');
-  fileList.innerHTML = ''; // Limpar a lista de arquivos
-
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      var filesRef = storage.ref('users/');
-      filesRef.listAll().then(result => {
-        result.items.forEach(item => {
-          item.getDownloadURL().then(url => {
-            item.getMetadata().then(metadata => {
-              var fileContainer = document.createElement('div');
-              fileContainer.classList.add('file-container'); // Adicionar a classe
-
-              if ( item.name.toLowerCase().endsWith('.jpg') || item.name.toLowerCase().endsWith('.jpeg') 
-                || item.name.toLowerCase().endsWith('.png') || item.name.toLowerCase().endsWith('.gif')) {
-                // Se for uma imagem, exibir miniatura
-                var img = document.createElement('img');
-                img.src = url; // Usar a variável url diretamente
-                img.alt = metadata.name; // Adicione o nome do arquivo como texto alternativo
-                img.classList.add('file-image'); // Adicionar a classe
-                fileContainer.appendChild(img);
-              } else {
-                // Se for outro tipo de arquivo, exibir um link direto para o download
-                var link = document.createElement('a');
-                link.href = url; // Usar a variável url diretamente
-                link.innerHTML = metadata.name; // Use metadata.name para exibir o nome do arquivo
-                fileContainer.appendChild(link);
-              }
-
-              // Adicione o nome do arquivo abaixo da miniatura ou link
-              var fileNameElement = document.createElement('p');
-              fileNameElement.textContent = metadata.name;
-              fileContainer.appendChild(fileNameElement);
-
-              fileList.appendChild(fileContainer);
-            });
-          }).catch(error => {
-            console.error('Erro ao recuperar metadados:', error);
-          });
-        });
-      }).catch(error => {
-        console.error('Erro ao recuperar arquivos:', error);
-      });
-    } else {
-      console.error('Usuário não autenticado.');
-    }
-  });
-}
-
-// Função para remover um arquivo do Firebase Storage
-function removeFile(userId, fileName) {
-  var fileRef = storage.ref('users/' + userId + '/files/' + fileName);
-
-  fileRef.delete().then(() => {
-    console.log('Arquivo removido com sucesso.');
-    displayFiles(); // Atualizar a exibição após a remoção
-  }).catch(error => {
-    console.error('Erro ao remover arquivo:', error);
-  });
-}
-
-// Chamar a função de exibição ao carregar a página
-document.addEventListener('DOMContentLoaded', displayAllFiles);
-
