@@ -1,102 +1,137 @@
+/* Navbar */
 .navbar {
-    background: linear-gradient(to bottom, red, black); 
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding: 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-#fileList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .file-container {
-    margin: 10px;
-    text-align: center;
-    flex: 1 1 calc(33.33% - 20px); /* Adiciona flexibilidade para dispositivos móveis */
-    max-width: calc(33.33% - 20px); /* Evita que o contêiner seja muito largo em dispositivos móveis */
-  }
-
- .file-container img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
-  
- .file-container a {
-    display: block;
-    padding: 10px;
-    background-color: blueviolet;
-    text-decoration: none;
-    color: #333;
-    border-radius: 4px;
-  }
-  
-  .file-container a:hover {
-    background-color: #ddd;
-  }
-  
-  .file-image {
-    width: 100%; /* Para garantir que a imagem ocupe 100% da largura do contêiner */
-    height: auto; /* Para manter a proporção da imagem */
-    max-width: 100%; /* Para garantir que a imagem não ultrapasse a largura máxima do contêiner */
-  }
-.profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+  background: linear-gradient(to bottom, red, black);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .navbar a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
 }
 
-
-h1 {
-    text-align: center;
-    margin-top: 100px;
-    font-size: 36px;
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
+/* File List */
+#fileList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.file-container {
+  margin: 10px;
+  text-align: center;
+  flex: 1 1 calc(33.33% - 20px);
+  max-width: calc(33.33% - 20px);
+}
+
+.file-container img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.file-container a {
+  display: block;
+  padding: 10px;
+  background-color: blueviolet;
+  text-decoration: none;
+  color: #333;
+  border-radius: 4px;
+}
+
+.file-container a:hover {
+  background-color: #ddd;
+}
+
+.file-image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* Menu Dropdown */
 .menu-dropdown {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .menu-dropdown a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin: 5px 0;
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 5px 0;
 }
 
 .menu-dropdown.show-menu {
-    display: block;
-}
-.menu-icon{
-    cursor: pointer;
-    order: 100;
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
+.menu-icon {
+  cursor: pointer;
+  order: 100;
+}
+
+/* Body */
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, black, red);
-    background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, black, red);
+  background-attachment: fixed;
 }
 
+/* Heading */
+h1 {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 36px;
+}
+#videoContainer {
+  max-width: 200px; /* Defina a largura máxima desejada */
+}
+.file-video {
+  width: 50%; /* O vídeo ocupará 100% da largura do contêiner */
+  height: auto; /* A altura será ajustada automaticamente para manter a proporção original */
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  width: 200px;
+  height: 300px;
+  text-align: center;
+  cursor: pointer;
+}
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.card-content {
+  margin-top: 10px;
+}
