@@ -15,19 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    cadsenha2.addEventListener('blur', habilitarBtn);
-
-    function habilitarBtn() {
-        const senha1 = cadsenha1.value.trim();
-        const senha2 = cadsenha2.value.trim();
-
-        if (senha1 === senha2 && senha1 !== "") {
-            btncriar.disabled = false;
-        } else {
-            btncriar.disabled = true;
-        }
-    }
-
     btncriar.addEventListener('click', clickCriar);
 
     function clickCriar() {
@@ -38,40 +25,44 @@ document.addEventListener('DOMContentLoaded', function () {
         const acceptTerms = document.getElementById('acceptTerms');
 
         if (acceptTerms.checked) {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(config);
-            }
+            if (cadsenha1.value.trim() === cadsenha2.value.trim()) {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(config);
+                }
 
-            const db = firebase.firestore();
+                const db = firebase.firestore();
 
-            db.collection('usuarios').where('nomeUsuario', '==', nomeUsuarioValue).get()
-                .then(function (querySnapshot) {
-                    if (querySnapshot.empty) {
-                        firebase.auth().createUserWithEmailAndPassword(cademail, cadsenha)
-                            .then(function (userCredential) {
-                                const userId = userCredential.user.uid;
-                                db.collection('usuarios').doc(userId).set({
-                                    nomeUsuario: nomeUsuarioValue,
-                                    email: cademail
-                                })
-                                    .then(function () {
-                                        console.log('Nome de usuário adicionado com sucesso!');
-                                        window.location.href = "../Home/home_index.html";
+                db.collection('usuarios').where('nomeUsuario', '==', nomeUsuarioValue).get()
+                    .then(function (querySnapshot) {
+                        if (querySnapshot.empty) {
+                            firebase.auth().createUserWithEmailAndPassword(cademail, cadsenha)
+                                .then(function (userCredential) {
+                                    const userId = userCredential.user.uid;
+                                    db.collection('usuarios').doc(userId).set({
+                                        nomeUsuario: nomeUsuarioValue,
+                                        email: cademail
                                     })
-                                    .catch(function (error) {
-                                        console.error('Erro ao adicionar nome de usuário:', error);
-                                    });
-                            })
-                            .catch(function (error) {
-                                console.error('Erro ao criar usuário:', error);
-                            });
-                    } else {
-                        alert('Nome de usuário já em uso. Escolha outro.');
-                    }
-                })
-                .catch(function (error) {
-                    console.error('Erro ao verificar nome de usuário:', error);
-                });
+                                        .then(function () {
+                                            console.log('Nome de usuário adicionado com sucesso!');
+                                            window.location.href = "../Home/home_index.html";
+                                        })
+                                        .catch(function (error) {
+                                            console.error('Erro ao adicionar nome de usuário:', error);
+                                        });
+                                })
+                                .catch(function (error) {
+                                    console.error('Erro ao criar usuário:', error);
+                                });
+                        } else {
+                            alert('Nome de usuário já em uso. Escolha outro.');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Erro ao verificar nome de usuário:', error);
+                    });
+            } else {
+                alert('As senhas não coincidem. Verifique e tente novamente.');
+            }
         } else {
             alert('Você deve aceitar os Termos de Uso e apertar o botão "Confirmar" para se cadastrar.');
         }
