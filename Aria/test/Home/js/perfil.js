@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Atualize elementos HTML com informações do perfil
                         userName.textContent = nomeUsuario;
-                        userPhoto.src = user.photoURL || 'URL_DA_IMAGEM_PADRÃO';
+                        userPhoto.src = user.photoURL || '../IMG/UsuarioFoto.png';
 
                         // Preencha as informações do card de perfil
                         profileCardUserName.textContent = nomeUsuario;
