@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 30px;;
   position: fixed;
   top: 0;
   left: 0;
@@ -14,16 +14,38 @@
 
 .navbar a {
   color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 20px;
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 10px 40px;
 }
 
 .profile-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 5px; /* Ajuste a margem conforme necessário */
+  margin-left: auto; /* Isso move a profile pic para o canto direito */
+  background-size: cover;
+  cursor: pointer;
 }
+.logoPrincipal{
+  width: 60px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 60px;
+  margin-left: 25px;
+
+}
+
+.logo {
+  /* Adicione estilos para a logo se necessário */
+  margin-left: 0px;
+  max-width: 120px; /* Ajuste a largura máxima conforme necessário */
+}
+
+
+
 
 /* File List */
 #fileList {

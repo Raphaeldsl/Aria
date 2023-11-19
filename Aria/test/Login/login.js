@@ -1,64 +1,69 @@
-function togglePasswordVisibility(inputId) {
-    var input = document.getElementById(inputId);
-    if (input.type === "password") {
-        input.type = "text";
-        document.querySelector(".password-toggle-icon i").classList.remove("bi-eye-slash");
-        document.querySelector(".password-toggle-icon i").classList.add("bi-eye");
-    } else {
-        input.type = "password";
-        document.querySelector(".password-toggle-icon i").classList.remove("bi-eye");
-        document.querySelector(".password-toggle-icon i").classList.add("bi-eye-slash");
-    }
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const btnEntrar = document.getElementById('btnentrar');
+    const googleLogin = document.getElementById('google-login');
+    const gitLogin = document.getElementById('git-login');
 
-let btnentrar = document.querySelector("#btnentrar");
-btnentrar.addEventListener('click', clickbtnentrar)
-
-function clickbtnentrar(){
-    let inemail = document.querySelector("#inemail").value
-    let insenha = document.querySelector("#insenha").value
-
-    auth.signInWithEmailAndPassword(inemail, insenha).
-    then(function(user){
-        console.log(user)  
-        window.location.href="../Home/home_index.html"
-    }, function(error){
-          console.log(error.message)
-    })
-  
-}
-const googleButton = document.querySelector('#google-login');
-
-googleButton.addEventListener('click', () => {
-   
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(googleProvider)
-        .then((result) => {
-            const user = result.user;
-            console.log('Usuário logado com o Google:', user);
-            window.location.href = '../Home/home_index.html';
-        })
-        .catch((error) => {
-            console.error('Erro ao autenticar com o Google:', error);
-        });
-});
-
-firebase.auth().onAuthStateChanged((user) => {
+    // Verificar se o usuário está autenticado antes de permitir a criação
+    const user = firebase.auth().currentUser;
     if (user) {
-        console.log('Usuário autenticado com o GitHub:', user);
-        window.location.href = 'Home/home_index.html';
+        // Usuário autenticado, redirecione para a página principal
+        window.location.href = '../Home/home_index.html';
     }
-});
-const githubButton = document.querySelector('#github-login');
-githubButton.addEventListener('click', () => {
-    const githubProvider = new firebase.auth.GithubAuthProvider();
-    firebase.auth().signInWithPopup(githubProvider)
-        .then((result) => {
-            const user = result.user;
-            console.log('Usuário logado com o GitHub:', user);
-            window.location.href = 'Home/home_index.html';
-        })
-        .catch((error) => {
-            console.error('Erro ao autenticar com o GitHub:', error);
-        });
+
+    btnEntrar.addEventListener('click', function () {
+        const email = document.getElementById('inemail').value;
+        const senha = document.getElementById('insenha').value;
+
+        firebase.auth().signInWithEmailAndPassword(email, senha)
+            .then(function () {
+                // Agora, verificamos se o usuário concluiu o processo de criação de conta
+                const userId = firebase.auth().currentUser.uid;
+                const db = firebase.firestore();
+
+                db.collection('usuarios').doc(userId).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            console.log('Usuário autenticado com sucesso.');
+                            window.location.href = '../Home/home_index.html';
+                        } else {
+                            // Usuário não concluiu o processo de criação de conta
+                            alert('Você ainda não completou o processo de criação de conta. Redirecionando para cadastro...');
+                            window.location.href = '../Cadastro/cadastro.html';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Erro ao verificar usuário:', error);
+                    });
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar:', error);
+                alert('Erro ao autenticar. Verifique seu email e senha e tente novamente.');
+            });
+    });
+
+    googleLogin.addEventListener('click', function () {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+            .then(function (result) {
+                console.log('Usuário autenticado com sucesso:', result.user);
+                window.location.href = '../Home/home_index.html';
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar com o Google:', error);
+            });
+    });
+
+    gitLogin.addEventListener('click', function () {
+        const provider = new firebase.auth.GithubAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+            .then(function (result) {
+                console.log('Usuário autenticado com sucesso:', result.user);
+                window.location.href = '../Home/home_index.html';
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar com o GitHub:', error);
+            });
+    });
 });

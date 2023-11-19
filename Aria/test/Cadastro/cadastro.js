@@ -15,23 +15,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    cadsenha2.addEventListener('blur', habitarBtn);
+    cadsenha2.addEventListener('blur', habilitarBtn);
 
-function habitarBtn() {
-    const senha1 = cadsenha1.value.trim();
-    const senha2 = cadsenha2.value.trim();
+    function habilitarBtn() {
+        const senha1 = cadsenha1.value.trim();
+        const senha2 = cadsenha2.value.trim();
 
-    if (senha1 === senha2 && senha1 !== "") {
-        btncriar.disabled = false;
-    } else {
-        btncriar.disabled = true;
+        if (senha1 === senha2 && senha1 !== "") {
+            btncriar.disabled = false;
+        } else {
+            btncriar.disabled = true;
+        }
     }
-}
 
+    btncriar.addEventListener('click', clickCriar);
 
-    btncriar.addEventListener('click', clickcriar);
-
-    function clickcriar() {
+    function clickCriar() {
         const cademail = document.querySelector("#cadEmailInput").value;
         const cadsenha = document.querySelector("#cadSenha").value;
         const nomeUsuarioValue = nomeUsuario.value;
@@ -55,13 +54,13 @@ function habitarBtn() {
                                     nomeUsuario: nomeUsuarioValue,
                                     email: cademail
                                 })
-                                .then(function() {
-                                    console.log('Nome de usuário adicionado com sucesso!');
-                                    window.location.href = "../Home/home_index.html";
-                                })
-                                .catch(function(error) {
-                                    console.error('Erro ao adicionar nome de usuário:', error);
-                                });
+                                    .then(function () {
+                                        console.log('Nome de usuário adicionado com sucesso!');
+                                        window.location.href = "../Home/home_index.html";
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Erro ao adicionar nome de usuário:', error);
+                                    });
                             })
                             .catch(function (error) {
                                 console.error('Erro ao criar usuário:', error);
@@ -79,19 +78,21 @@ function habitarBtn() {
     }
 });
 
-
 function createAccountWithGoogle() {
     const acceptTerms = document.getElementById('acceptTerms');
 
     if (acceptTerms.checked) {
-        
         const provider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(provider)
             .then((result) => {
                 const user = result.user;
+
+                // Armazenar o e-mail no Local Storage
+                localStorage.setItem('userEmail', user.email);
+
                 console.log('Usuário logado:', user);
-                window.location.href = "../Home/home_index.html";
+                window.location.href = "../Home/nomeUsuario.html";
             })
             .catch((error) => {
                 console.error('Erro ao autenticar com o Google:', error);
@@ -105,14 +106,14 @@ function createAccountWithGitHub() {
     const acceptTerms = document.getElementById('acceptTerms');
 
     if (acceptTerms.checked) {
-        
+
         const provider = new firebase.auth.GithubAuthProvider();
 
         firebase.auth().signInWithPopup(provider)
             .then((result) => {
                 const user = result.user;
                 console.log('Usuário logado:', user);
-                window.location.href = 'Home/home_index.html';
+                window.location.href = '../Home/nomeUsuario.html';
             })
             .catch((error) => {
                 console.error('Erro ao autenticar com o GitHub:', error);

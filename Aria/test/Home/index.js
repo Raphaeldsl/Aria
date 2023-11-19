@@ -14,6 +14,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+document.addEventListener('DOMContentLoaded', function () {
+  const userPhoto = document.getElementById('userPhoto');
+
+  firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+          var userPhotoUrl = user.photoURL;
+          if (userPhotoUrl) {
+              userPhoto.style.backgroundImage = "url('" + userPhotoUrl + "')";
+          } else {
+              // Caso não haja foto do usuário, você pode definir uma imagem padrão
+              userPhoto.style.backgroundImage = "url('caminho/para/imagem/padrao.jpg')";
+          }
+      } else {
+          console.error('Usuário não autenticado.');
+      }
+  });
+});
 
 // Função para enviar arquivo para o Firebase Storage
 function uploadFile() {
