@@ -1,55 +1,95 @@
-// Espera até que o documento HTML esteja totalmente carregado
+// ... (código existente) ...
+
 document.addEventListener('DOMContentLoaded', function () {
-    // Obtenha referências aos elementos HTML
     const userPhoto = document.getElementById('userPhoto');
     const userName = document.getElementById('userName');
-    const userEmail = document.getElementById('userEmail');
     const signOutButton = document.getElementById('signOutButton');
-    const profileCard = document.getElementById('profileCard');
+    const backToHomeButton = document.getElementById('backToHomeButton');
+    const editPhotoButton = document.getElementById('editPhotoButton');
+    const photoInput = document.getElementById('photoInput');
+    const profileCardUserName = document.getElementById('profileCardUserName');
+    const profileCardPortfolio = document.getElementById('profileCardPortfolio');
+    const profileCardWorkplaces = document.getElementById('profileCardWorkplaces');
+    const profileCardSocialLink = document.getElementById('profileCardSocialLink');
 
-    // Obtenha a instância de autenticação do Firebase
-    const auth = firebase.auth();
-    // Obtenha a instância do Firebase Firestore
-    const db = firebase.firestore();
-
-    // Adicione um observador para detectar alterações no estado de autenticação do usuário
-    auth.onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            // O usuário está autenticado
+            // Usuário está autenticado, recupere informações do perfil
+            const userId = user.uid;
+            const db = firebase.firestore();
 
-            // Atualize os elementos HTML com as informações do usuário
-            userPhoto.src = user.photoURL || ''; // URL da foto do usuário
-            userName.textContent = user.displayName || 'Nome do Usuário';
-            userEmail.textContent = user.email || 'E-mail do Usuário';
+            db.collection('usuarios').doc(userId).get()
+                .then(function (doc) {
+                    if (doc.exists) {
+                        const nomeUsuario = doc.data().nomeUsuario;
+                        const portfolio = doc.data().portfolio || '';
+                        const workplaces = doc.data().workplaces || '';
+                        const socialLink = doc.data().socialLink || '';
 
-            // Exemplo de como recuperar e exibir informações adicionais no "profileCard".
-            // Você deve implementar a lógica de consulta ao Firestore ou outro banco de dados, se necessário.
-            // Aqui, usamos o Firestore para recuperar os dados do usuário.
+                        // Atualize elementos HTML com informações do perfil
+                        userName.textContent = nomeUsuario;
+                        userPhoto.src = user.photoURL || 'URL_DA_IMAGEM_PADRÃO';
 
-            db.collection('users').doc(user.uid).get().then(function (doc) {
-                if (doc.exists) {
-                    const data = doc.data();
-                    // Atualize os elementos do "profileCard" com os dados recuperados.
-                    profileCard.textContent = `Portfólio: ${data.portfolio || 'Não especificado'}, Nome de Usuário: ${data.username || 'Não especificado'}`;
-                } else {
-                    console.log('Nenhum documento encontrado para este usuário.');
-                }
-            });
+                        // Preencha as informações do card de perfil
+                        profileCardUserName.textContent = nomeUsuario;
+                        profileCardPortfolio.textContent = portfolio;
+                        profileCardWorkplaces.textContent = workplaces;
+                        profileCardSocialLink.textContent = socialLink;
 
-            // Adicione um evento ao botão de sair
-            signOutButton.addEventListener('click', function () {
-                // Use Firebase para fazer logout do usuário
-                auth.signOut().then(function () {
-                    // Redirecione o usuário para a página de login ou outra página apropriada.
-                    window.location.href = '../Login/login.html';
-                }).catch(function (error) {
-                    console.error('Erro ao fazer logout:', error);
+                        // Adicione um evento de clique para o botão de sair
+                        signOutButton.addEventListener('click', function () {
+                            firebase.auth().signOut().then(function () {
+                                // Redirecione ou atualize a página após a saída
+                                window.location.href = '../Login/login.html';
+                            }).catch(function (error) {
+                                console.error('Erro ao fazer logout:', error);
+                            });
+                        });
+
+                        // Adicione um evento de clique para o botão de voltar para a home
+                        backToHomeButton.addEventListener('click', function () {
+                            window.location.href = '../Home/home_index.html';
+                        });
+
+                        // Adicione um evento de clique para o botão de editar foto
+                        editPhotoButton.addEventListener('click', function () {
+                            // Abra a caixa de seleção de arquivo ao clicar no botão
+                            photoInput.click();
+                        });
+
+                        // Adicione um evento de mudança para a entrada de arquivo
+                        photoInput.addEventListener('change', function (event) {
+                            // Obtenha o arquivo selecionado pelo usuário
+                            const newPhoto = event.target.files[0];
+
+                            // Faça upload da nova foto para o armazenamento do Firebase
+                            const storageRef = firebase.storage().ref();
+                            const photoRef = storageRef.child(`fotosPerfil/${userId}`);
+                            photoRef.put(newPhoto).then(function () {
+                                // Obtenha a URL da nova foto após o upload
+                                return photoRef.getDownloadURL();
+                            }).then(function (photoUrl) {
+                                // Atualize a foto de perfil no Firestore e na página
+                                user.updateProfile({ photoURL: photoUrl }).then(function () {
+                                    userPhoto.src = photoUrl;
+                                    console.log('Foto de perfil atualizada com sucesso.');
+                                }).catch(function (error) {
+                                    console.error('Erro ao atualizar foto de perfil:', error);
+                                });
+                            }).catch(function (error) {
+                                console.error('Erro ao fazer upload da nova foto:', error);
+                            });
+                        });
+
+                    } else {
+                        console.error('Usuário não encontrado no banco de dados.');
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Erro ao recuperar informações do perfil:', error);
                 });
-            });
         } else {
-            // O usuário não está autenticado
-            // Redirecione o usuário para a página de login
-            window.location.href = '../Login/login.html';
+            console.error('Usuário não autenticado.');
         }
     });
 });
