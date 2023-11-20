@@ -9,24 +9,26 @@
 </head>
 <body>
        <!-- Navbar responsável pela parte superior-->
-    <div class="navbar">
-        <img class="profile-pic" src="seu-perfil.jpg" alt="Sua Foto de Perfil">
+       <div class="navbar">
+        <img class="logoPrincipal" src="../IMG/logoPrincipal.png" alt="Sua Foto de Perfil">
+       
+    
         <a href="home_index.html">Home</a>
         <a href="musica_index.html">Música</a>
         <a href="cinema_index.html">Cinema</a>
         <a href="games_index.html">Games</a>
-        <!-- Ícone de hambúrguer -->
-        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
-   
-
-    <!-- Menu suspenso do hambúrguer -->
-    <div class="menu-dropdown" id="menuDropdown">
-        <a href="perfil.html">Perfil</a>
-        <a href="#">Conta</a>
-        <a href="config.html">Configurações</a>
-        <button id="Sair">Sair</button>
+        <div id="userPhoto" class="profile-pic" onclick="toggleMenu()">
+            <!-- A imagem do usuário será inserida aqui -->
+        </div>
+        <div id="menuContainer">
+            <div class="menu-dropdown" id="menuDropdown">
+                <a href="perfil.html">Perfil</a>
+                <a href="#">Conta</a>
+                <a href="config.html">Configurações</a>
+                <button id="Sair">Sair</button>
+            </div>
+        </div>
     </div>
-</div>
 
     <!-- Conteúdo da página -->
     <h1>Sucesso</h1>

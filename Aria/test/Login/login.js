@@ -11,54 +11,74 @@ function togglePasswordVisibility(inputId) {
     }
 }
 
-let btnentrar = document.querySelector("#btnentrar");
-btnentrar.addEventListener('click', clickbtnentrar)
+document.addEventListener('DOMContentLoaded', function () {
+    const btnEntrar = document.getElementById('btnentrar');
+    const googleLogin = document.getElementById('google-login');
+    const gitLogin = document.getElementById('git-login');
+    btnEntrar.addEventListener('click', function () {
+        const email = document.getElementById('inemail').value;
+        const senha = document.getElementById('insenha').value;
+    
+        firebase.auth().signInWithEmailAndPassword(email, senha)
+            .then(function () {
+                // Adicione um pequeno atraso (por exemplo, 500 ms) antes de verificar o usuário
+                setTimeout(function () {
+                    // Verificamos se o usuário concluiu o processo de criação de conta
+                    const userId = firebase.auth().currentUser.uid;
+                    const db = firebase.firestore();
+    
+                    db.collection('usuarios').doc(userId).get()
+                        .then(function (doc) {
+                            if (doc.exists) {
+                                console.log('Usuário autenticado com sucesso.');
+                                window.location.href = '../Home/home_index.html';
+                            } else {
+                                // Usuário não concluiu o processo de criação de conta
+                                alert('Você ainda não completou o processo de criação de conta. Redirecionando para cadastro...');
+                                window.location.href = '../Cadastro/cadastro.html';
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error('Erro ao verificar usuário:', error);
+                        });
+                }, 500);
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar:', error);
+                alert('Erro ao autenticar. Verifique seu email e senha e tente novamente.');
+            });
+    });
+    
 
-function clickbtnentrar(){
-    let inemail = document.querySelector("#inemail").value
-    let insenha = document.querySelector("#insenha").value
+    googleLogin.addEventListener('click', function () {
+        const provider = new firebase.auth.GoogleAuthProvider();
 
-    auth.signInWithEmailAndPassword(inemail, insenha).
-    then(function(user){
-        console.log(user)  
-        window.location.href="../Home/home_index.html"
-    }, function(error){
-          console.log(error.message)
-    })
-  
-}
-const googleButton = document.querySelector('#google-login');
+        firebase.auth().signInWithPopup(provider)
+            .then(function (result) {
+                console.log('Usuário autenticado com sucesso:', result.user);
+                window.location.href = "../Home/nomeUsuario.html";
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar com o Google:', error);
+            });
+    });
 
-googleButton.addEventListener('click', () => {
-   
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(googleProvider)
-        .then((result) => {
-            const user = result.user;
-            console.log('Usuário logado com o Google:', user);
-            window.location.href = '../Home/home_index.html';
-        })
-        .catch((error) => {
-            console.error('Erro ao autenticar com o Google:', error);
-        });
+    gitLogin.addEventListener('click', function () {
+        const provider = new firebase.auth.GithubAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+            .then(function (result) {
+                console.log('Usuário autenticado com sucesso:', result.user);
+                window.location.href = "../Home/nomeUsuario.html";
+            })
+            .catch(function (error) {
+                console.error('Erro ao autenticar com o GitHub:', error);
+            });
+    });
 });
-
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        console.log('Usuário autenticado com o GitHub:', user);
-        window.location.href = 'Home/home_index.html';
+        // Usuário autenticado, redirecione para a página principal
+        window.location.href = '../Home/home_index.html';
     }
-});
-const githubButton = document.querySelector('#github-login');
-githubButton.addEventListener('click', () => {
-    const githubProvider = new firebase.auth.GithubAuthProvider();
-    firebase.auth().signInWithPopup(githubProvider)
-        .then((result) => {
-            const user = result.user;
-            console.log('Usuário logado com o GitHub:', user);
-            window.location.href = 'Home/home_index.html';
-        })
-        .catch((error) => {
-            console.error('Erro ao autenticar com o GitHub:', error);
-        });
 });

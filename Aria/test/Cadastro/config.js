@@ -8,7 +8,7 @@
   appId: "1:279976171170:web:caa77af161cfb3eca329fb",
   measurementId: "G-KJ7JK4LDPP"
 };*/
-/*raphael
+
 const firebaseConfig = {
   apiKey: "AIzaSyD0__2tCTlEQhwv3GwtxU9bBy7dJTz4GCE",
   authDomain: "etec-de4d0.firebaseapp.com",
@@ -18,8 +18,8 @@ const firebaseConfig = {
   messagingSenderId: "3231346956",
   appId: "1:3231346956:web:41135319866475df7c1929",
   measurementId: "G-XDNPFXL9G7"
-};*/
-
+};
+/*
 const firebaseConfig = {
   apiKey: "AIzaSyB0CLDzjszZgzppgnMVbpiQ-AORyhhsci0",
   authDomain: "test123-326b8.firebaseapp.com",
@@ -29,7 +29,7 @@ const firebaseConfig = {
   messagingSenderId: "268644934542",
   appId: "1:268644934542:web:9996af49a8c45a19bb7adf",
   measurementId: "G-7XPMEPLHPY"
-};
+};*/
 firebase.initializeApp(firebaseConfig);
 let auth = firebase.auth();
 const db = firebase.firestore();

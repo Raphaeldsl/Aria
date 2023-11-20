@@ -8,10 +8,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
   logoutButton.addEventListener('click', () => {
     firebase.auth().signOut().then(() => {
-      window.location.href = '../Cadastro/cadastro.html';
+      window.location.href = '../Login/login.html';
     }).catch((error) => {
       console.error('Erro ao encerrar a sessão: ', error);
     });
+  });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  const userPhoto = document.getElementById('userPhoto');
+  firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+          var userPhotoUrl = user.photoURL;
+          if (userPhotoUrl) {
+              userPhoto.style.backgroundImage = "url('" + userPhotoUrl + "')";
+          } else {
+              // Caso não haja foto do usuário, você pode definir uma imagem padrão
+              userPhoto.style.backgroundImage = "url('../IMG/UsuarioFoto.png')";
+          }
+      } else {
+          console.error('Usuário não autenticado.');
+      }
   });
 });
 
@@ -43,7 +59,7 @@ function uploadFile() {
 }
 
 // Função para recuperar arquivos do Firebase Storage e criar cards
-// Função para recuperar arquivos do Firebase Storage e criar cards
+
 function displayFiles() {
   var cardContainer = document.getElementById('cardContainer');
   cardContainer.innerHTML = ''; // Limpar a lista de cards

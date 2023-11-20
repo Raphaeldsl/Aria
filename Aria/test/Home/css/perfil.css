@@ -72,3 +72,21 @@ input[type="text"] {
     max-width: 300px;
     margin: 0 auto;
 }
+
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+#editPhotoButton {
+    position: absolute;
+    bottom: 0px; /* Ajuste a distância inferior conforme necessário */
+    right: -10px; /* Ajuste a distância direita conforme necessário */
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 22px; /* Ajuste o tamanho do ícone conforme necessário */
+    color: #12a59e; /* Ajuste a cor do ícone conforme necessário */
+}
+
