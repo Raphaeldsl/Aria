@@ -6,14 +6,14 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-image: linear-gradient(to right, black,red);
-    animation: degrade-animado 5s infinite alternate;
+    background: linear-gradient(to right, black,red);
+    
 }
 @media (min-width: 768px) {
     form {
         padding: 30px;
         width: 45%;
-        height: 724px;
+        height: 1010px;
         background-color: rgb(255, 255, 255);
         border-radius: 5px;
         
@@ -45,23 +45,9 @@ body {
 }
 a{
     color: black;
-    
-}
-
-a:hover{
-    background-color: black;
-    color: white;
-    border-radius: 5px;
     text-decoration: none;
 }
-@keyframes degrade-animado{
-    0%{
-        background-position-x:0%;
-    }
-    100%{
-        background-position-x:100%;
-    }
-}
+
 ::-webkit-scrollbar{
     width: 10px;
     background-color: red;
@@ -69,5 +55,5 @@ a:hover{
 
 ::-webkit-scrollbar-thumb{
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 5px;
+    border-radius: 6px;
 }
