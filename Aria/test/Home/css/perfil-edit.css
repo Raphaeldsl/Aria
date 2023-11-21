@@ -60,7 +60,7 @@ textarea {
 /* Adicione mais estilos conforme necessário */
 
 ::-webkit-scrollbar{
-    width: 10px;
+    width: 12px;
     background-color: red;
 }
 

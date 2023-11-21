@@ -91,7 +91,7 @@ input[type="text"] {
 }
 
 ::-webkit-scrollbar{
-    width: 10px;
+    width: 12px;
     background-color: red;
 }
 
